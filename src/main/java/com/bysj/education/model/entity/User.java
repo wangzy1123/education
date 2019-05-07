@@ -18,7 +18,9 @@ public class User implements Serializable {
     private String pwd;
     private Integer isAdmin;
     private Integer state;
-
+    private String telephone;
+    private String email;
+    private String headImg;
 
     public Integer getUserId() {
         return userId;
@@ -68,15 +70,27 @@ public class User implements Serializable {
         this.state = state;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                ", userId=" + userId +
-                ", userName=" + userName +
-                ", userAccount=" + userAccount +
-                ", pwd=" + pwd +
-                ", isAdmin=" + isAdmin +
-                ", state=" + state +
-                "}";
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getHeadImg() {
+        return headImg;
+    }
+
+    public void setHeadImg(String headImg) {
+        this.headImg = headImg;
     }
 }

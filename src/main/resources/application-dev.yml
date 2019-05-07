@@ -13,9 +13,10 @@ spring:
 
   datasource:
     platform: mysql
+    schema: classpath:schema.sql
     url: jdbc:mysql://localhost:3306/education?characterEncoding=UTF-8
     username: root
-    password:
+    password: 1234
     driver-class-name: com.mysql.jdbc.Driver
 
 #mybatis
