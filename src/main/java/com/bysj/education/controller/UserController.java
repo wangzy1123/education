@@ -1,9 +1,11 @@
 package com.bysj.education.controller;
 
 import com.bysj.common.util.Result;
+import com.bysj.common.util.Util;
 import com.bysj.education.model.entity.User;
 import com.bysj.education.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,7 +23,11 @@ import java.util.Map;
 public class UserController {
 
     @Autowired
-    IUserService userService;
+    private IUserService userService;
+    @Value("${staticFileBasePath}")
+    private String staticFileBasePath;
+    @Value("${showBasePath}")
+    private String showBasePath;
 
     @PostMapping("/login")
     public Result login(@RequestParam Map<String, Object> map){
@@ -61,16 +67,29 @@ public class UserController {
         return new Result(user, Result.SUCCESS);
     }
 
+    @PostMapping("/updateUser")
+    public Result updateUser(@RequestParam Map<String, Object> params){
+        User user = new User();
+        user.setUserId(Integer.valueOf(Util.getStringValue(params.get("userId"))));
+        user.setUserName(Util.getStringValue(params.get("userName")));
+        user.setTelephone(Util.getStringValue(params.get("telephone")));
+        user.setEmail(Util.getStringValue(params.get("email")));
+        user.setHeadImg(Util.getStringValue(params.get("headImg")));
+        this.userService.updateById(user);
+        return new Result(user, Result.SUCCESS);
+    }
+
     @PostMapping("/uploadHeadImg")
     public Result uploadHeadImg(@RequestParam MultipartFile file, HttpServletRequest request){
         String today = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        String path = "D:\\upload\\headImg\\" + today;
+        String path = staticFileBasePath + "headImg\\" + today;
         File saveDir = new File(path);
         if(!saveDir.exists()){
             saveDir.mkdirs();
         }
         String filename = file.getOriginalFilename();
         String filePath = path + "\\" +  filename;
+        String showPath = showBasePath + "headImg/" + today + "/" +  filename;
         try {
             InputStream is = file.getInputStream();
             FileOutputStream fos = new FileOutputStream(filePath);
@@ -86,7 +105,7 @@ public class UserController {
             e.printStackTrace();
             return Result.ERROR;
         }
-        return new Result(filePath, Result.SUCCESS, "上传成功");
+        return new Result(showPath, Result.SUCCESS, "上传成功");
     }
 
 }

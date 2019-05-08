@@ -1,3 +1,6 @@
 spring:
   profiles:
     active: dev
+
+staticFileBasePath: D://upload/
+showBasePath: http://localhost:8081/education/image/
